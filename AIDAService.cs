@@ -22,7 +22,7 @@ namespace AIDAS
         private async Task<GroupStatistic> GetData(string key)
         {
             var queryCollection = searcher.Get();
-            var statistic = new GroupStatistic() { Titte = key, Devices = new Dictionary<string, string>() };
+            var statistic = new GroupStatistic(key);
 
             foreach (ManagementObject manegementObject in queryCollection)
             {
