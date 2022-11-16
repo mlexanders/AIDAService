@@ -10,14 +10,14 @@
 
     public class GroupStatistic
     {
+        public string Titte { get; set; } = null!;
+        public Dictionary<string, string> Devices { get; set; } = null!;
+
         public GroupStatistic(string titte)
         {
             Titte = titte;
             Devices = new();
         }
-
-        public string Titte { get; set; } = null!;
-        public Dictionary<string, string> Devices { get; set; } = null!;
     }
 }
 
