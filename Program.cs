@@ -8,8 +8,10 @@ var a = new AIDAService();
 
 while (true)
 {
-    a.GetData();
-    break;
-    //Task.Delay(200).Wait();    
+   var c = await a.GetTempAsync();
+   var b = await a.GetSpeedsAsync();
+
+
+    Task.Delay(200).Wait();    
 }
 

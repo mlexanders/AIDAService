@@ -6,8 +6,6 @@ namespace AIDAS
     public class AIDAService
     {
         private readonly ManagementObjectSearcher searcher;
-        private Dictionary<string, Dictionary<string, string>> Data = new ();
-        private Dictionary<string, string> Speeds= new ();
         
         public AIDAService()
         {
@@ -17,56 +15,22 @@ namespace AIDAS
             searcher = new ManagementObjectSearcher(scope, query);
         }
 
-        private Dictionary<string, string> GetTemp()
-        {
-            return Temperatures;
-        }
+        public async Task<GroupStatistic> GetTempAsync() => await GetData("T");
 
-        private Dictionary<string, string> GetSpeeds()
-        {
-            return Temperatures;
-        }
+        public async Task<GroupStatistic> GetSpeedsAsync() => await GetData("S");
 
-
-        private Task GetData(string type)
+        private async Task<GroupStatistic> GetData(string key)
         {
             var queryCollection = searcher.Get();
-
-            //var pDict = new Dictionary<string, string>();
-            //var voltages = new Dictionary<string, string>(); // voltages
-            //var other = new Dictionary<string, string>();
+            var statistic = new GroupStatistic() { Titte = key, Devices = new Dictionary<string, string>() };
 
             foreach (ManagementObject manegementObject in queryCollection)
             {
                 var instance = Descript(manegementObject);
-                var type = instance.Type;
-
-                if (type.Equals("T"))
-                {
-                    instance.Add(instance.Label, instance.Value);
-                }
-                else if (type.Equals("S"))
-                {
-                    Speeds.Add(instance.Label, instance.Value);
-                }
-
-
-                Data.Add(instance.Type, new Dictionary<string, string>(instance.Label, instance.Value));
-
-                //else if (type.Equals("pDict"))
-                //{
-                //    pDict.Add(data.Label, data.Value);
-                //}
-                //else if (type.Equals("voltages"))
-                //{
-                //    voltages.Add(data.Label, data.Value);
-                //}
-                //else if (type.Equals("other"))
-                //{
-                //    other.Add(data.Label, data.Value);
-                //}
+                if (instance.Type.Equals(key)) statistic.Devices.Add(instance.Label, instance.Value);
             }
-            return Task.CompletedTask;
+           
+            return statistic;
         }
 
         private static SensorData Descript(ManagementObject m)
