@@ -6,7 +6,7 @@ namespace AIDAS
     public class AIDAService
     {
         private readonly ManagementObjectSearcher searcher;
-        
+
         public AIDAService()
         {
             var scope = new ManagementScope($"\\\\{Environment.MachineName}\\root\\WMI");
@@ -29,7 +29,7 @@ namespace AIDAS
                 var instance = Descript(manegementObject);
                 if (instance.Type.Equals(key)) statistic.Devices.Add(instance.Label, instance.Value);
             }
-           
+
             return statistic;
         }
 
